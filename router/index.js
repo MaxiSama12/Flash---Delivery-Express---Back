@@ -8,6 +8,6 @@ router.post("/crear/rubro", createRubro);
 //comercio
 
 //cliente
-
+router.post("cliente", "...")
 
 module.exports = router;
