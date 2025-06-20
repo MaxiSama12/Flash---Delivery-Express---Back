@@ -15,7 +15,7 @@ router.put("/comercio/:id_comercio/editar", putComercio);
 
 //producto
 router.get("/productos", getAllProductos);
-router.get("/:id_comercio/productos", getAllProductosByComercio);
+router.get("/productos/:id_comercio", getAllProductosByComercio);
 router.get("/producto/:id", getProductoById);
 router.post("/crear/producto", createProducto);
 router.put("/producto/:id_producto/editar", putProducto);

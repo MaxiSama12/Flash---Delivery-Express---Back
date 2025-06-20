@@ -32,14 +32,14 @@ const getAllProductos = async (req, res) => {
 
 const getAllProductosByComercio = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!id) {
+    const { id_comercio } = req.params;
+    if (!id_comercio) {
       return res.status(500).json({
         mensaje: "El comercio no fue encontrado",
       });
     }
     const query = `SELECT * FROM producto WHERE id_comercio = ?`;
-    db.query(query, [id], (err, result) => {
+    db.query(query, [id_comercio], (err, result) => {
       if (err) {
         return res.status(500).json({
           mensaje: "Error al obtener los productos del comercio",
@@ -82,7 +82,7 @@ const getProductoById = async (req, res) => {
       }
       return res.status(200).json({
         mensaje: "Producto encontrado exitosamente",
-        producto: result,
+        producto: result[0],
       });
     });
   } catch (error) {
@@ -119,8 +119,7 @@ const createProducto = async (req, res) => {
     disponible,
     id_comercio,
     id_categoria,
-    url_imagen,
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    url_imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     db.query(
       query,
       [
