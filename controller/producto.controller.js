@@ -154,9 +154,112 @@ const createProducto = async (req, res) => {
   }
 };
 
+const putProducto = async (req, res) => {
+  try {
+    const { id_producto } = req.params;
+    const {
+      nombre,
+      descripcion,
+      precio,
+      rating,
+      disponible,
+      id_comercio,
+      id_categoria,
+      url_imagen,
+    } = req.body;
+
+    if (!id_producto) {
+      return res
+        .status(400)
+        .json({ mensaje: "ID de producto no proporcionado" });
+    }
+
+    const query = `
+      UPDATE producto 
+      SET nombre = ?, descripcion = ?, precio = ?, rating = ?, disponible = ?, 
+          id_comercio = ?, id_categoria = ?, url_imagen = ?
+      WHERE id_producto = ?
+    `;
+
+    db.query(
+      query,
+      [
+        nombre,
+        descripcion,
+        precio,
+        rating,
+        disponible,
+        id_comercio,
+        id_categoria,
+        url_imagen,
+        id_producto,
+      ],
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            mensaje: "Error al editar el producto",
+            error: err.message,
+          });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ mensaje: "Producto no encontrado" });
+        }
+
+        return res.status(200).json({
+          mensaje: "Producto editado exitosamente",
+        });
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: "Error interno del servidor",
+      error: error.message,
+    });
+  }
+};
+
+const deleteProducto = async (req, res) => {
+  try {
+    const { id_producto } = req.params;
+
+    if (!id_producto) {
+      return res
+        .status(400)
+        .json({ mensaje: "ID de producto no proporcionado" });
+    }
+
+    const query = `DELETE FROM producto WHERE id_producto = ?`;
+
+    db.query(query, [id_producto], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          mensaje: "Error al eliminar el producto",
+          error: err.message,
+        });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ mensaje: "Producto no encontrado" });
+      }
+
+      return res.status(200).json({
+        mensaje: "Producto eliminado exitosamente",
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: "Error interno del servidor",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllProductos,
   getAllProductosByComercio,
   getProductoById,
   createProducto,
+  putProducto,
+  deleteProducto,
 };
