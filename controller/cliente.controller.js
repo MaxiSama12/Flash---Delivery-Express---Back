@@ -58,60 +58,68 @@ const getClienteById = async (req, res) => {
 };
 
 const RegisterCliente = async (req, res) => {
-    try {
-        const { nombre, email, telefono, direccion, pass_cliente, rol } = req.body;
-        
-        if (!nombre || !email || !telefono || !direccion || !pass_cliente || !rol) {
-            return res.status(400).json({
-                mensaje: "Todos los campos son obligatorios",
-            });
-        }
-        
-        const todosLosClientes = getAllCliente()
-        console.log(todosLosClientes)
-        // const existe = false
-        // todosLosClientes.forEach(cliente => {
-        //   if(cliente.email === email){
-        //     return existe = true
-        //   }
-        // });
+  try {
+    const { nombre, email, telefono, direccion, pass_cliente, rol } = req.body;
 
-
-        // if(existe){
-        //   return res.status(400).json({
-        //     mensaje:"El email ya esta registrado"
-        //   })
-        // }
-
-
-        
-        const query = "INSERT INTO cliente(nombre, email, telefono, direccion, pass_cliente, rol) VALUES( ?, ?, ?, ?, ?, ?)"
-        db.query(query, [nombre, email, telefono, direccion, pass_cliente, rol], (err, result) => {
-            
-            if(err) {
-                return res.status(500).json({
-                    mensaje:"error al insertar rubro",
-                    error: err.message,
-                });
-            }
-
-            return res.status(201).json({
-                mensaje:"El cliente se registro correctamente.",
-                resultado:result,
-            });
-        });
-        
-    } catch (error) {
-        return res.status(500).json({
-            mensaje:"Error interno del servidor",
-            error: error.message,
-        })
+    if (!nombre || !email || !telefono || !direccion || !pass_cliente || !rol) {
+      return res.status(400).json({
+        mensaje: "Todos los campos son obligatorios",
+      });
     }
 
+    const queryClientes = "SELECT * FROM cliente";
 
+    db.query(queryClientes, (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          mensaje: "Error al obtener los clientes",
+          error: err.message,
+        });
+      }
+      return res.status(200).json({
+        mensaje: "Clientes obtenidos correctamente",
+        usuarios: result,
+      });
+    });
 
+    const existe = false;
+    todosLosClientes.forEach((cliente) => {
+      if (cliente.email === email) {
+        return (existe = true);
+      }
+    });
+
+    if (existe) {
+      return res.status(400).json({
+        mensaje: "El email ya esta registrado",
+      });
+    }
+
+    const query =
+      "INSERT INTO cliente(nombre, email, telefono, direccion, pass_cliente, rol) VALUES( ?, ?, ?, ?, ?, ?)";
+    db.query(
+      query,
+      [nombre, email, telefono, direccion, pass_cliente, rol],
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            mensaje: "error al insertar rubro",
+            error: err.message,
+          });
+        }
+
+        return res.status(201).json({
+          mensaje: "El cliente se registro correctamente.",
+          resultado: result,
+        });
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: "Error interno del servidor",
+      error: error.message,
+    });
+  }
 };
-
-
 
 module.exports = { getAllCliente, getClienteById, RegisterCliente };
