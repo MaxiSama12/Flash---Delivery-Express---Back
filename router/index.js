@@ -1,11 +1,5 @@
 const router = require("express").Router();
-const {
-  getAllCliente,
-  getClienteById,
-  registerCliente,
-} = require("../controller/cliente.controller");
 const { getAllRubros, createRubro } = require("../controller/rubro.controller");
-const { authUsuario } = require("../controller/login.controller");
 const {
   getAllComercios,
   getComercioById,
@@ -25,9 +19,22 @@ const {
   createCategoria,
 } = require("../controller/categoria.controller");
 const {
+  getAllPedidosByComercio,
+  getAllPedidosByCliente,
+  getAllPedidosByRepartidor,
+  getPedidosDisponibles,
+  createPedido,
+  updateEstadoPedido,
+} = require("../controller/pedido.controller");
+const {
+  getAllCliente,
+  getClienteById,
+  registerCliente,
+} = require("../controller/cliente.controller");
+const { authUsuario } = require("../controller/login.controller");
+const {
   registerRepartidor,
   getAllRepartidores,
-  getRepartidorById,
 } = require("../controller/repartidor.controller");
 
 //rubro
@@ -52,6 +59,14 @@ router.delete("/producto/:id_producto/eliminar", deleteProducto);
 router.get("/categorias", getAllCategorias);
 router.post("/crear/categoria", createCategoria);
 
+//pedido
+router.get("/pedidos-comercio/:id_comercio", getAllPedidosByComercio);
+router.get("/pedidos-cliente/:id_cliente", getAllPedidosByCliente);
+router.get("/pedidos-repartidor/:id_repartidor", getAllPedidosByRepartidor);
+router.get("/pedidos-disponibles", getPedidosDisponibles);
+router.post("/crear/pedido", createPedido);
+router.put("/pedido/:id_pedido/editar", updateEstadoPedido);
+
 //cliente
 router.get("/clientes", getAllCliente);
 router.get("/cliente/:id_cliente", getClienteById);
@@ -62,7 +77,6 @@ router.post("/login", authUsuario);
 
 //repartidor
 router.post("/registro-repartidor", registerRepartidor);
-router.get("/repartidores", getAllRepartidores);
-router.get("/repartidor/:id_repartidor", getRepartidorById);
+router.post("/repartidores", getAllRepartidores);
 
 module.exports = router;
