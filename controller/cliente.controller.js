@@ -57,7 +57,7 @@ const getClienteById = async (req, res) => {
   }
 };
 
-const RegisterCliente = async (req, res) => {
+const registerCliente = async (req, res) => {
   try {
     const { nombre, email, telefono, direccion, pass_cliente, rol } = req.body;
 
@@ -67,53 +67,42 @@ const RegisterCliente = async (req, res) => {
       });
     }
 
-    const queryClientes = "SELECT * FROM cliente";
+    const queryClienteEmail = "SELECT email FROM cliente WHERE email = ?";
 
-    db.query(queryClientes, (err, result) => {
+    db.query(queryClienteEmail, [email], (err, result) => {
       if (err) {
         return res.status(500).json({
-          mensaje: "Error al obtener los clientes",
+          mensaje: "Error al obtener los emails",
           error: err.message,
         });
       }
-      return res.status(200).json({
-        mensaje: "Clientes obtenidos correctamente",
-        usuarios: result,
-      });
-    });
 
-    const existe = false;
-    todosLosClientes.forEach((cliente) => {
-      if (cliente.email === email) {
-        return (existe = true);
-      }
-    });
+      if (result.length === 0) {
+        const query =
+          "INSERT INTO cliente(nombre, email, telefono, direccion, pass_cliente, rol) VALUES( ?, ?, ?, ?, ?, ?)";
+        db.query(
+          query,
+          [nombre, email, telefono, direccion, pass_cliente, rol],
+          (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                mensaje: "error al insertar cliente",
+                error: err.message,
+              });
+            }
 
-    if (existe) {
-      return res.status(400).json({
-        mensaje: "El email ya esta registrado",
-      });
-    }
-
-    const query =
-      "INSERT INTO cliente(nombre, email, telefono, direccion, pass_cliente, rol) VALUES( ?, ?, ?, ?, ?, ?)";
-    db.query(
-      query,
-      [nombre, email, telefono, direccion, pass_cliente, rol],
-      (err, result) => {
-        if (err) {
-          return res.status(500).json({
-            mensaje: "error al insertar rubro",
-            error: err.message,
-          });
-        }
-
-        return res.status(201).json({
-          mensaje: "El cliente se registro correctamente.",
-          resultado: result,
+            return res.status(201).json({
+              mensaje: "El cliente se registro correctamente.",
+              resultado: result,
+            });
+          }
+        );
+      } else {
+        return res.status(409).json({
+          mensaje: "El email ya está registrado",
         });
       }
-    );
+    });
   } catch (error) {
     return res.status(500).json({
       mensaje: "Error interno del servidor",
@@ -122,4 +111,4 @@ const RegisterCliente = async (req, res) => {
   }
 };
 
-module.exports = { getAllCliente, getClienteById, RegisterCliente };
+module.exports = { getAllCliente, getClienteById, registerCliente };
