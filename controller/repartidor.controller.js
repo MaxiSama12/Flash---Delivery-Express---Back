@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 const getAllRepartidores = async (req, res) => {
   try {
-    const query = "SELECT * FROM repartidores";
+    const query = "SELECT * FROM repartidor";
 
     db.query(query, (err, result) => {
       if (err) {
@@ -15,6 +15,39 @@ const getAllRepartidores = async (req, res) => {
       return res.status(200).json({
         mensaje: "Repartidores traidos correctamente.",
         repartidores: result,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: "Error interno del servidor.",
+      error: error.message,
+    });
+  }
+};
+
+const getRepartidorById = async (req, res) => {
+  try {
+    const { id_repartidor } = req.params;
+
+    if (!id_repartidor) {
+      return res.status(400).json({
+        mensaje: "El id es necesario",
+      });
+    }
+
+    const query = "SELECT * FROM repartidor WHERE id_repartidor = ?";
+
+    db.query(query, [id_repartidor], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          mensaje: "Error al traer el repartidor",
+          error: err.message,
+        });
+      }
+
+      return res.status(201).json({
+        mensaje: "Cliente traido exitosamente",
+        resultado: result,
       });
     });
   } catch (error) {
@@ -86,4 +119,4 @@ const registerRepartidor = async (req, res) => {
   }
 };
 
-module.exports = {getAllRepartidores, registerRepartidor };
+module.exports = { getAllRepartidores, getRepartidorById, registerRepartidor };
