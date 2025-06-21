@@ -1,8 +1,31 @@
 const router = require("express").Router();
-const { getAllRubros, createRubro } = require("../controller/rubro.controller")
-const { getAllComercios, getComercioById, registerComercio, putComercio } = require("../controller/comercio.controller")
-const { getAllProductos, getAllProductosByComercio, getProductoById, createProducto, putProducto, deleteProducto } = require("../controller/producto.controller")
-const { getAllCategorias, createCategoria } = require("../controller/categoria.controller")
+const { getAllRubros, createRubro } = require("../controller/rubro.controller");
+const {
+  getAllComercios,
+  getComercioById,
+  registerComercio,
+  putComercio,
+} = require("../controller/comercio.controller");
+const {
+  getAllProductos,
+  getAllProductosByComercio,
+  getProductoById,
+  createProducto,
+  putProducto,
+  deleteProducto,
+} = require("../controller/producto.controller");
+const {
+  getAllCategorias,
+  createCategoria,
+} = require("../controller/categoria.controller");
+const {
+  getAllPedidosByComercio,
+  getAllPedidosByCliente,
+  getAllPedidosByRepartidor,
+  getPedidosDisponibles,
+  createPedido,
+  updateEstadoPedido,
+} = require("../controller/pedido.controller");
 
 //rubro
 router.get("/rubros", getAllRubros);
@@ -23,12 +46,17 @@ router.put("/producto/:id_producto/editar", putProducto);
 router.delete("/producto/:id_producto/eliminar", deleteProducto);
 
 //categoria
-router.get("/categorias", getAllCategorias)
-router.post("/crear/categoria", createCategoria)
+router.get("/categorias", getAllCategorias);
+router.post("/crear/categoria", createCategoria);
 
-
+//pedido
+router.get("/pedidos/:id_comercio", getAllPedidosByComercio);
+router.get("/pedidos/:id_cliente", getAllPedidosByCliente);
+router.get("/pedidos/:id_repartidor", getAllPedidosByRepartidor);
+router.get("/pedidos/disponibles", getPedidosDisponibles);
+router.post("/crear/pedido", createPedido);
+router.put("/pedido/:id_pedido/editar", updateEstadoPedido);
 
 //cliente
-
 
 module.exports = router;
