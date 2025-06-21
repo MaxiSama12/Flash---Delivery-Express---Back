@@ -154,6 +154,8 @@ const createPedido = async (req, res) => {
           prod.cantidad,
         ]);
 
+        console.log("valores", valores);
+
         db.query(queryPedidoProducto, [valores], (err) => {
           if (err) {
             return res.status(500).json({
