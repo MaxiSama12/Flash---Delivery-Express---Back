@@ -52,7 +52,17 @@ const registerComercio = async (req, res) => {
       return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
     }
 
-    const query = `
+    const query = "SELECT email_admin FROM comercio WHERE email_admin = ?";
+    db.query(query, [email_admin], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          mensaje: "Error al obtener los emails",
+          error: err.message,
+        });
+      }
+
+      if (result.length === 0) {
+       const query = `
       INSERT INTO comercio (
         id_rubro,
         nombre_comercio,
@@ -96,6 +106,12 @@ const registerComercio = async (req, res) => {
         });
       }
     );
+      } else {
+        return res.status(409).json({
+          mensaje: "Este email ya está registrado",
+        });
+      }
+    });
   } catch (error) {
     return res.status(500).json({
       mensaje: "Error interno del servidor",
