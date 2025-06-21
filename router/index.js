@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { getAllCliente, getClienteById, RegisterCliente } = require("../controller/cliente.controller");
 const { getAllRubros, createRubro } = require("../controller/rubro.controller")
-
+const { authUsuario } = require("../controller/login.controller")
 //rubro
 router.get("/rubros", getAllRubros);
 router.post("/crear/rubro", createRubro);
@@ -14,6 +14,9 @@ router.post("/crear/rubro", createRubro);
 router.get("/clientes", getAllCliente)
 router.get("/cliente/:id_cliente", getClienteById)
 router.post("/registro-cliente", RegisterCliente)
+
+//login
+router.post("/login", authUsuario)
 
 
 module.exports = router;

@@ -52,7 +52,7 @@ const getClienteById = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       mensaje: "Error interno del servidor",
-      error: err.message,
+      error: error.message,
     });
   }
 };
@@ -67,8 +67,25 @@ const RegisterCliente = async (req, res) => {
             });
         }
         
-        const query = "INSERT INTO cliente(nombre, email, telefono, direccion, pass_cliente, rol) VALUES( ?, ?, ?, ?, ?, ?)"
+        const todosLosClientes = getAllCliente()
+        console.log(todosLosClientes)
+        // const existe = false
+        // todosLosClientes.forEach(cliente => {
+        //   if(cliente.email === email){
+        //     return existe = true
+        //   }
+        // });
+
+
+        // if(existe){
+        //   return res.status(400).json({
+        //     mensaje:"El email ya esta registrado"
+        //   })
+        // }
+
+
         
+        const query = "INSERT INTO cliente(nombre, email, telefono, direccion, pass_cliente, rol) VALUES( ?, ?, ?, ?, ?, ?)"
         db.query(query, [nombre, email, telefono, direccion, pass_cliente, rol], (err, result) => {
             
             if(err) {
