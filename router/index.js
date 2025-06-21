@@ -1,10 +1,11 @@
 const router = require("express").Router();
-const { getAllCliente, getClienteById, RegisterCliente } = require("../controller/cliente.controller");
+const { getAllCliente, getClienteById, registerCliente } = require("../controller/cliente.controller");
 const { getAllRubros, createRubro } = require("../controller/rubro.controller")
 const { authUsuario } = require("../controller/login.controller")
 const { getAllComercios, getComercioById, registerComercio, putComercio } = require("../controller/comercio.controller")
 const { getAllProductos, getAllProductosByComercio, getProductoById, createProducto, putProducto, deleteProducto } = require("../controller/producto.controller")
-const { getAllCategorias, createCategoria } = require("../controller/categoria.controller")
+const { getAllCategorias, createCategoria } = require("../controller/categoria.controller");
+const { registerRepartidor, getAllRepartidores } = require("../controller/repartidor.controller");
 
 //rubro
 router.get("/rubros", getAllRubros);
@@ -33,10 +34,17 @@ router.post("/crear/categoria", createCategoria)
 //cliente
 router.get("/clientes", getAllCliente)
 router.get("/cliente/:id_cliente", getClienteById)
-router.post("/registro-cliente", RegisterCliente)
+router.post("/registro-cliente", registerCliente)
 
 //login
 router.post("/login", authUsuario)
+
+
+//repartidor
+router.post("/registro-repartidor", registerRepartidor)
+router.post("/repartidores", getAllRepartidores)
+
+
 
 
 module.exports = router;
