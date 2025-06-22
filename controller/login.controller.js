@@ -48,20 +48,20 @@ const authUsuario = async (req, res) => {
 
               return res.status(200).json({
                 mensaje: "Repartidor verificado correctamente",
-                repartidor: result,
+                user: result[0],
               });
             });
           } else {
             return res.status(200).json({
               mensaje: "Cliente verificado correctamente",
-              cliente: result,
+              user: result[0],
             });
           }
         });
       } else {
         return res.status(200).json({
           mensaje: "Admin verificado correctamente",
-          comercio: result,
+          user: result[0],
         });
       }
     });
