@@ -106,7 +106,7 @@ const registerComercio = async (req, res) => {
 
 const getComercioById = async (req, res) => {
   try {
-    const { id_comercio } = req.parms;
+    const { id_comercio } = req.params;
     const query = `
     SELECT c.*, r.nombre_rubro FROM comercio c
     JOIN rubro r ON c.id_rubro = r.id_rubro
