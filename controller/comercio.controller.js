@@ -165,7 +165,7 @@ const putComercio = async (req, res) => {
         }
 
         return res.status(200).json({
-          mensaje: nuevoEstado ? "Comercio activado" : "Comercio desactivado",
+          mensaje: nuevoEstado ? "Comercio abierto" : "Comercio cerrado",
           resultado: result,
         });
       });
