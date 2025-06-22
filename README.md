@@ -59,13 +59,33 @@ backend/
 ## 🧠 Funcionalidades principales
 Registro e inicio de sesión por rol (cliente, comercio, repartidor)
 
-CRUD de productos (por comercio)
+- CRUD de productos (por comercio)
 
-Gestión de pedidos
+- Gestión de pedidos
 
-Asignación de repartidores
+- Asignación de repartidores
 
-Seguimiento de estado del pedido
+- Seguimiento de estado del pedido
+ ---
+ 
+## 🗂️ Rutas principales
+![image](https://github.com/user-attachments/assets/e9c9bc4a-a768-47a1-9d3f-5749c5a57185)
+---
 
-Protección de rutas con JWT
+## 🗃️ Base de datos
+Script SQL: database/schema.sql
 
+Diagrama ER (entidad-relación) en docs/diagram.png
+
+Tablas: cliente, comercio, producto, pedido, detalle_pedido, repartidor, rutas_entrega, categoria
+
+##🧑‍💻 Autor
+Desarrollado por: 
+- Samaniego Esteban
+- Giacobbe Dario
+- Timo Hector
+- Morales Juan
+- Ponce Micaela
+- Ruiz Pablo
+
+Proyecto académico / personal
