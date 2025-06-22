@@ -79,7 +79,7 @@ Diagrama ER (entidad-relación) en docs/diagram.png
 
 Tablas: cliente, comercio, producto, pedido, detalle_pedido, repartidor, rutas_entrega, categoria
 
-##🧑‍💻 Autor
+## 🧑‍💻 Autor
 Desarrollado por: 
 - Samaniego Esteban
 - Giacobbe Dario
@@ -88,4 +88,4 @@ Desarrollado por:
 - Ponce Micaela
 - Ruiz Pablo
 
-Proyecto académico / personal
+Proyecto Final
