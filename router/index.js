@@ -35,6 +35,7 @@ const { authUsuario } = require("../controller/login.controller");
 const {
   registerRepartidor,
   getAllRepartidores,
+  getRepartidorById,
 } = require("../controller/repartidor.controller");
 
 //rubro
@@ -78,5 +79,8 @@ router.post("/login", authUsuario);
 //repartidor
 router.post("/registro-repartidor", registerRepartidor);
 router.post("/repartidores", getAllRepartidores);
+router.post("/repartidor/:id", getRepartidorById);
+
+
 
 module.exports = router;

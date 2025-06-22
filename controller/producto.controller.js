@@ -234,12 +234,14 @@ const deleteProducto = async (req, res) => {
       if (err) {
         return res.status(500).json({
           mensaje: "Error al eliminar el producto",
-          error: err.message,
+          error: err,
         });
       }
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({ mensaje: "Producto no encontrado" });
+        return res
+          .status(404)
+          .json({ mensaje: "Producto no encontrado", err: err });
       }
 
       return res.status(200).json({

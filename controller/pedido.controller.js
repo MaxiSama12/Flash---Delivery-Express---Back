@@ -32,36 +32,66 @@ const getAllPedidosByCliente = async (req, res) => {
   }
 };
 
-const getAllPedidosByComercio = async (req, res) => {
+const getAllPedidosByComercio = (req, res) => {
   const { id_comercio } = req.params;
 
-  try {
-    const query = `
-      SELECT p.*, cl.nombre AS nombre_cliente
-      FROM pedido p
-      JOIN cliente cl ON p.id_cliente = cl.id_cliente
-      WHERE p.id_comercio = ?
-      ORDER BY p.fecha_pedido DESC
-    `;
-    db.query(query, [id_comercio], (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          mensaje: "Error al obtener los pedidos del comercio",
-          error: err.message,
+  const query = `
+    SELECT 
+      p.id_pedido,
+      p.fecha_pedido,
+      p.estado,
+      p.direccion_entrega,
+      p.id_cliente,
+      cl.nombre AS nombre_cliente,
+      pp.id_producto,
+      pr.nombre AS nombre_producto,
+      pr.precio,
+      pp.cantidad
+    FROM pedido p
+    JOIN cliente cl ON p.id_cliente = cl.id_cliente
+    JOIN pedido_producto pp ON p.id_pedido = pp.id_pedido
+    JOIN producto pr ON pp.id_producto = pr.id_producto
+    WHERE p.id_comercio = ?
+    ORDER BY p.fecha_pedido DESC
+  `;
+
+  db.query(query, [id_comercio], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        mensaje: "Error al obtener los pedidos",
+        error: err.message,
+      });
+    }
+
+    // Agrupar los productos por pedido
+    const pedidosMap = new Map();
+
+    results.forEach((row) => {
+      if (!pedidosMap.has(row.id_pedido)) {
+        pedidosMap.set(row.id_pedido, {
+          id_pedido: row.id_pedido,
+          fecha_pedido: row.fecha_pedido,
+          estado: row.estado,
+          direccion_entrega: row.direccion_entrega,
+          id_cliente: row.id_cliente,
+          nombre_cliente: row.nombre_cliente,
+          productos: [],
         });
       }
 
-      return res.status(200).json({
-        mensaje: "Pedidos del comercio obtenidos exitosamente",
-        pedidos: result,
+      const pedido = pedidosMap.get(row.id_pedido);
+      pedido.productos.push({
+        id_producto: row.id_producto,
+        nombre: row.nombre_producto,
+        cantidad: row.cantidad,
+        precio: row.precio,
       });
     });
-  } catch (error) {
-    return res.status(500).json({
-      mensaje: "Error interno del servidor",
-      error: error.message,
-    });
-  }
+
+    const pedidos = Array.from(pedidosMap.values());
+
+    return res.status(200).json({ pedidos });
+  });
 };
 
 const getAllPedidosByRepartidor = async (req, res) => {
@@ -105,7 +135,7 @@ const createPedido = async (req, res) => {
       id_cliente,
       id_repartidor,
       id_comercio,
-      productos, 
+      productos,
     } = req.body;
 
     if (
