@@ -35,7 +35,7 @@ const createCategoria = async (req, res) => {
 
 const getAllCategorias = async (req, res) => {
   try {
-    const query = "SELECT * FROM categoria";
+    const query = "SELECT * FROM categoria ORDER BY nombre ASC";
     db.query(query, (err, result) => {
       if (err) {
         return res.status(500).json({
