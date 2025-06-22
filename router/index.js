@@ -78,8 +78,8 @@ router.post("/login", authUsuario);
 
 //repartidor
 router.post("/registro-repartidor", registerRepartidor);
-router.post("/repartidores", getAllRepartidores);
-router.post("/repartidor/:id", getRepartidorById);
+router.get("/repartidores", getAllRepartidores);
+router.get("/repartidor/:id", getRepartidorById);
 
 
 
