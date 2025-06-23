@@ -136,6 +136,7 @@ const createPedido = async (req, res) => {
       id_repartidor,
       id_comercio,
       productos,
+      monto_total
     } = req.body;
 
     if (
@@ -150,8 +151,8 @@ const createPedido = async (req, res) => {
     }
 
     const queryPedido = `
-      INSERT INTO pedido (fecha_pedido, estado, direccion_entrega, id_cliente, id_repartidor, id_comercio)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO pedido (fecha_pedido, estado, direccion_entrega, id_cliente, id_repartidor, id_comercio, monto_total)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
@@ -163,6 +164,7 @@ const createPedido = async (req, res) => {
         id_cliente,
         id_repartidor || null,
         id_comercio,
+        monto_total
       ],
       (err, result) => {
         if (err) {
