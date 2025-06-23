@@ -99,9 +99,10 @@ const getAllPedidosByRepartidor = async (req, res) => {
 
   try {
     const query = `
-      SELECT p.*, c.nombre_comercio
+      SELECT p.*, c.nombre_comercio, c.demora_promedio, cl.nombre
       FROM pedido p
       JOIN comercio c ON p.id_comercio = c.id_comercio
+      JOIN cliente cl ON p.id_cliente = cl.id_cliente
       WHERE p.id_repartidor = ?
       ORDER BY p.fecha_pedido DESC
     `;
