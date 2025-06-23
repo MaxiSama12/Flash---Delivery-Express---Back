@@ -242,32 +242,37 @@ const updateEstadoPedido = async (req, res) => {
   }
 };
 
-const getPedidosDisponibles = async (req, res) => {
-  try {
-    const query = `
-      SELECT * FROM pedido 
-      WHERE estado = 'completado' AND id_repartidor IS NULL
-    `;
+const getPedidosDisponibles = (req, res) => {
+  const query = `
+    SELECT
+      p.id_pedido,
+      p.fecha_pedido,
+      p.estado,
+      p.direccion_entrega,
+      p.id_cliente,
+      cl.nombre AS nombre_cliente,
+      p.id_comercio,
+      c.nombre_comercio,
+      c.direccion
+    FROM pedido p
+    JOIN cliente cl ON p.id_cliente = cl.id_cliente
+    JOIN comercio c ON p.id_comercio = c.id_comercio
+    WHERE p.estado = 'completado' AND p.id_repartidor IS NULL
+    ORDER BY p.fecha_pedido DESC
+  `;
 
-    db.query(query, (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          mensaje: "Error al obtener los pedidos disponibles",
-          error: err.message,
-        });
-      }
-
-      return res.status(200).json({
-        mensaje: "Pedidos disponibles obtenidos exitosamente",
-        pedidos: result,
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        mensaje: "Error al obtener pedidos disponibles",
+        error: err.message,
       });
+    }
+    return res.status(200).json({
+      mensaje: "Pedidos disponibles",
+      pedidos: results,
     });
-  } catch (error) {
-    return res.status(500).json({
-      mensaje: "Error interno del servidor",
-      error: error.message,
-    });
-  }
+  });
 };
 
 module.exports = {

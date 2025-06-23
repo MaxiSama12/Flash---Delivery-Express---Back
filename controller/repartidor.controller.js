@@ -46,7 +46,7 @@ const getRepartidorById = async (req, res) => {
       }
 
       return res.status(201).json({
-        mensaje: "Cliente traido exitosamente",
+        mensaje: "Repartidor traido exitosamente",
         resultado: result,
       });
     });
