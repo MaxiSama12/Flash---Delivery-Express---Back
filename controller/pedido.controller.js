@@ -99,12 +99,9 @@ const getAllPedidosByRepartidor = async (req, res) => {
 
   try {
     const query = `
-      SELECT p.*, c.nombre_comercio, c.demora_promedio, cl.nombre
-      FROM pedido p
-      JOIN comercio c ON p.id_comercio = c.id_comercio
-      JOIN cliente cl ON p.id_cliente = cl.id_cliente
-      WHERE p.id_repartidor = ?
-      ORDER BY p.fecha_pedido DESC
+      SELECT * FROM vista_pedidos_repartidor
+      WHERE id_repartidor = ?
+      ORDER BY fecha_pedido DESC
     `;
     db.query(query, [id_repartidor], (err, result) => {
       if (err) {
@@ -137,7 +134,7 @@ const createPedido = async (req, res) => {
       id_repartidor,
       id_comercio,
       productos,
-      monto_total
+      monto_total,
     } = req.body;
 
     if (
@@ -165,7 +162,7 @@ const createPedido = async (req, res) => {
         id_cliente,
         id_repartidor || null,
         id_comercio,
-        monto_total
+        monto_total,
       ],
       (err, result) => {
         if (err) {
