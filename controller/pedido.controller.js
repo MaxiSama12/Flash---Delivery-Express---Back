@@ -36,24 +36,11 @@ const getAllPedidosByComercio = (req, res) => {
   const { id_comercio } = req.params;
 
   const query = `
-    SELECT 
-      p.id_pedido,
-      p.fecha_pedido,
-      p.estado,
-      p.direccion_entrega,
-      p.id_cliente,
-      cl.nombre AS nombre_cliente,
-      pp.id_producto,
-      pr.nombre AS nombre_producto,
-      pr.precio,
-      pp.cantidad
-    FROM pedido p
-    JOIN cliente cl ON p.id_cliente = cl.id_cliente
-    JOIN pedido_producto pp ON p.id_pedido = pp.id_pedido
-    JOIN producto pr ON pp.id_producto = pr.id_producto
-    WHERE p.id_comercio = ?
-    ORDER BY p.fecha_pedido DESC
-  `;
+  SELECT *
+  FROM vista_pedidos_detallados
+  WHERE id_comercio = ?
+  ORDER BY fecha_pedido DESC
+`;
 
   db.query(query, [id_comercio], (err, results) => {
     if (err) {

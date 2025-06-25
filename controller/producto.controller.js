@@ -111,15 +111,9 @@ const createProducto = async (req, res) => {
         mensaje: "Faltan datos obligatorios",
       });
     }
-    const query = `INSERT INTO producto (
-    nombre,
-    descripcion,
-    precio,
-    rating,
-    disponible,
-    id_comercio,
-    id_categoria,
-    url_imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const query = "CALL InsertarNuevoProducto(?, ?, ?, ?, ?, ?, ?, ?)";
+
     db.query(
       query,
       [
@@ -136,12 +130,15 @@ const createProducto = async (req, res) => {
         if (err) {
           return res.status(500).json({
             mensaje: "Error al crear el producto",
-            error: err,
+            error: err.message, 
           });
         }
+        
+        const idProducto = result[0][0].idProducto; 
+
         return res.status(201).json({
           mensaje: "Producto creado exitosamente",
-          idProducto: result.insertId,
+          idProducto: idProducto, 
         });
       }
     );
