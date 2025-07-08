@@ -114,7 +114,6 @@ const getAllPedidosByRepartidor = async (req, res) => {
 const createPedido = async (req, res) => {
   try {
     const {
-      fecha_pedido,
       estado,
       direccion_entrega,
       id_cliente,
@@ -137,14 +136,13 @@ const createPedido = async (req, res) => {
     }
 
     const queryPedido = `
-      INSERT INTO pedido (fecha_pedido, estado, direccion_entrega, id_cliente, id_repartidor, id_comercio, monto_total, metodo)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO pedido (estado, direccion_entrega, id_cliente, id_repartidor, id_comercio, monto_total, metodo)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
       queryPedido,
       [
-        fecha_pedido || new Date(),
         estado || "pendiente",
         direccion_entrega,
         id_cliente,
